@@ -7,6 +7,7 @@ import { getApiService, getProviderStatus } from '../services/service-manager.js
 import { getProviderPoolManager } from '../services/service-manager.js';
 import { MODEL_PROVIDER } from '../utils/common.js';
 import { getRegisteredProviders } from '../providers/adapter.js';
+import { getProviderModels } from '../providers/provider-models.js';
 import { countTokensAnthropic } from '../utils/token-utils.js';
 import { PROMPT_LOG_FILENAME } from '../core/config-manager.js';
 import { getPluginManager } from '../core/plugin-manager.js';
@@ -99,11 +100,14 @@ export function createRequestHandler(config, providerPoolManager) {
 
                 // Health check endpoint
                 if (method === 'GET' && path === '/health') {
+                    const provider = currentConfig.MODEL_PROVIDER;
+                    const models = getProviderModels(provider);
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({
                         status: 'healthy',
                         timestamp: new Date().toISOString(),
-                        provider: currentConfig.MODEL_PROVIDER
+                        provider,
+                        models: models?.length > 0 ? models : undefined
                     }));
                     return true;
                 }
