@@ -15,4 +15,8 @@ api-potluck-keys.json
 api-potluck-data.json
 # Codex credentials
 configs/codex/
+# Password file (optional, defaults to 'admin123' if absent)
+configs/pwd
+# Log files
+logs/*.log
 
