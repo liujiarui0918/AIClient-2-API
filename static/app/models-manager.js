@@ -146,7 +146,13 @@ function renderModelsList(models) {
         
         html += `
             <div class="provider-models-group" data-provider="${providerType}">
-                <div class="provider-models-header" onclick="window.toggleProviderModels('${providerType}')">
+                <div class="provider-models-header" 
+                        role="button" 
+                        tabindex="0"
+                        aria-expanded="true"
+                        aria-controls="models-${providerType}"
+                        onclick="window.toggleProviderModels('${providerType}')"
+                        onkeydown="window.handleActivationKey(event, () => window.toggleProviderModels('${providerType}'))">
                     <div class="provider-models-title">
                         <i class="${providerIcon}"></i>
                         <h3>${providerDisplayName}</h3>
@@ -158,7 +164,13 @@ function renderModelsList(models) {
                 </div>
                 <div class="provider-models-content" id="models-${providerType}">
                     ${modelList.map(model => `
-                        <div class="model-item" onclick="window.copyModelName('${escapeHtml(model)}', this)" title="${t('models.clickToCopy') || '点击复制'}">
+                        <div class="model-item" 
+                                role="button"
+                                tabindex="0"
+                                aria-label="${escapeHtml(model)} - ${t('models.clickToCopy') || '点击复制'}"
+                                onclick="window.copyModelName('${escapeHtml(model)}', this)"
+                                onkeydown="window.handleActivationKey(event, () => window.copyModelName('${escapeHtml(model)}', this))"
+                                title="${t('models.clickToCopy') || '点击复制'}">
                             <div class="model-item-icon">
                                 <i class="fas fa-cube"></i>
                             </div>
@@ -255,9 +267,11 @@ function toggleProviderModels(providerType) {
     if (content.classList.contains('collapsed')) {
         content.classList.remove('collapsed');
         header.classList.remove('collapsed');
+        header.setAttribute('aria-expanded', 'true');
     } else {
         content.classList.add('collapsed');
         header.classList.add('collapsed');
+        header.setAttribute('aria-expanded', 'false');
     }
 }
 
@@ -313,6 +327,19 @@ async function refreshModels() {
 window.toggleProviderModels = toggleProviderModels;
 window.copyModelName = copyModelName;
 window.refreshModels = refreshModels;
+
+/**
+ * 处理可交互元素的键盘事件（Enter 或 Space 触发点击）
+ * @param {KeyboardEvent} event - 键盘事件
+ * @param {Function} action - 要执行的操作
+ */
+function handleActivationKey(event, action) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        action();
+    }
+}
+window.handleActivationKey = handleActivationKey;
 
 // 监听组件加载完成事件
 window.addEventListener('componentsLoaded', () => {

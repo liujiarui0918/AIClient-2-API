@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="components/section-models.css">
+<!-- Models Section -->
+<section id="models" class="section" aria-labelledby="models-title">
+    <h2 id="models-title" data-i18n="models.title">可用模型列表</h2>
+    <div class="models-panel">
+        <div class="models-description">
+            <div class="highlight-note">
+                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                <span data-i18n="models.note">点击模型名称可直接复制到剪贴板</span>
+            </div>
+        </div>
+
+        <div class="models-controls">
+            <button class="btn btn-primary" id="refreshModelsBtn" onclick="window.refreshModels()"
+                aria-label="Refresh models list" data-i18n-aria-label="models.refresh">
+                <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                <span data-i18n="models.refresh">刷新模型列表</span>
+            </button>
+        </div>
+
+        <!-- Models Container -->
+        <div class="models-container">
+            <div id="modelsList" class="models-list" role="list" aria-label="Available models" data-i18n-aria-label="models.title">
+                <!-- Models will be loaded here -->
+                <div class="models-loading" role="status" aria-live="polite">
+                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                    <span data-i18n="common.loading">加载中...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
